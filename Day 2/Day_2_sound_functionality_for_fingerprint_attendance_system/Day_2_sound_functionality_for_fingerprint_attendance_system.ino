@@ -1,13 +1,14 @@
-const byte buzzerPin = 9;
-unsigned long prev;
+const byte buzzerPin = 25;
 
 void setup() {
-  pinMode(buzzerPin, OUTPUT);
-  Serial.begin(9600);
-  printMenu();
+    Serial.begin(115200);
+//  delay(10);
+    ledcAttach(buzzerPin, 2000, 8);
+    printMenu();
 }
 
 void loop() {
+   //playConnected();
   if (Serial.available()) {
     int option = Serial.parseInt();
     Serial.print("Selected Option: ");
@@ -15,27 +16,29 @@ void loop() {
     handleOption(option);
     printMenu();
   }
+
+  delay(20);
 }
 
 
 // utility
 void playTone(int freq, int duration) {
-  tone(buzzerPin, freq, duration);
+  ledcWriteTone(buzzerPin, freq);
   delay(duration);
-  noTone(buzzerPin);
+  ledcWriteTone(buzzerPin, 0);
   delay(30);
 }
 
 void playConnected() {
-  playTone(1568, 90);
+  playTone(3136, 90);
   delay(70);
-  playTone(2093, 170);
+  playTone(4186, 170);
 }
 
 void playDisconnected() {
-  playTone(2093, 90);
+  playTone(4186, 90);
   delay(70);
-  playTone(1568, 170);
+  playTone(3136, 170);
 }
 
 void playLowBattery() {
@@ -47,23 +50,23 @@ void playLowBattery() {
 
 void playAlertToPowerOff() {
   for (int i = 0; i < 2; i++) {
-    playTone(1568, 200);
+    playTone(3136, 200);
     delay(100);
-    playTone(1318, 200);
+    playTone(2636, 200);
     delay(100);
   }
 }
 
 void playTurnedOn() {
-  playTone(1318, 300);
+  playTone(2636, 300);
   playTone(1568, 150);
   playTone(2093, 200);
 }
 
 void playPowerOff() {
-  playTone(2093, 200);
-  playTone(1568, 150);
-  playTone(1318, 300);
+  playTone(4186, 200);
+  playTone(3136, 150);
+  playTone(2636, 300);
 }
 
 void playError() {
@@ -72,33 +75,33 @@ void playError() {
 }
 
 void playNoMatch() {
-  playTone(784, 150);
+  playTone(1568, 150);
   delay(100);
-  playTone(660, 150);
+  playTone(1320, 150);
 }
 
 void playWelcomeAccepted() {
-  playTone(1047, 100);
-  playTone(1318, 100);
-  playTone(1568, 200);
+  playTone(2094, 100);
+  playTone(2636, 100);
+  playTone(3136, 200);
 }
 
 void playGoodbyeAccepted() {
-  playTone(1568, 100);
-  playTone(1318, 100);
-  playTone(1047, 200);
+  playTone(3136, 100);
+  playTone(2636, 100);
+  playTone(2094, 200);
 }
 
 void playRemoveFinger() {
-  playTone(1568, 90);
+  playTone(3136, 90);
   delay(50);
-  playTone(1318, 120);
+  playTone(2636, 120);
 }
 
 void playPlaceFinger() {
-  playTone(1318, 140);
+  playTone(2636, 140);
   delay(50);
-  playTone(1568, 120);
+  playTone(3136, 120);
 }
 
 void printMenu() {
