@@ -8,11 +8,6 @@ void setup() {
 }
 
 void loop() {
-//  if(millis() - prev >= 200UL){
-//    playRemoveFinger();
-//    prev = millis();
-//    }
-  //playError(200UL);
   if (Serial.available()) {
     int option = Serial.parseInt();
     Serial.print("Selected Option: ");
@@ -31,96 +26,80 @@ void playTone(int freq, int duration) {
   delay(30);
 }
 
-// GOOD
 void playConnected() {
-  playTone(784, 90);    
-  delay(70);      
-  playTone(1047, 170); 
+  playTone(1568, 90);
+  delay(70);
+  playTone(2093, 170);
 }
 
-// GOOD
 void playDisconnected() {
-   playTone(1047, 90);  
-  delay(70);         
-  playTone(784, 170);   
+  playTone(2093, 90);
+  delay(70);
+  playTone(1568, 170);
 }
 
-// GOOD
 void playLowBattery() {
   for (int i = 0; i < 3; i++) {
-    playTone(392, 180);  
+    playTone(4000, 180);
     delay(45);
   }
 }
 
-// GOOD
 void playAlertToPowerOff() {
   for (int i = 0; i < 2; i++) {
-    playTone(784, 200); 
+    playTone(1568, 200);
     delay(100);
-    playTone(659, 200);  
+    playTone(1318, 200);
     delay(100);
   }
 }
 
-// GOOD
 void playTurnedOn() {
-  playTone(659, 300);  
-  playTone(784, 150);  
-  playTone(1047, 200); 
+  playTone(1318, 300);
+  playTone(1568, 150);
+  playTone(2093, 200);
 }
 
-
-//GOOD
 void playPowerOff() {
-  playTone(1047, 200); 
-  playTone(784, 150);  
-  playTone(659, 300);  
+  playTone(2093, 200);
+  playTone(1568, 150);
+  playTone(1318, 300);
 }
 
-// GOOD
-void playError(unsigned long howLong) {
-  if (millis() - prev >= howLong){
-  playTone(300, 100);
-  prev = millis();
+void playError() {
+  playTone(4500, 600);
   noTone(buzzerPin);
-  }
 }
 
-
-// GOOD
 void playNoMatch() {
-  playTone(392, 150);  
+  playTone(784, 150);
   delay(100);
-  playTone(330, 150);  
+  playTone(660, 150);
 }
 
-// GOOD
 void playWelcomeAccepted() {
-playTone(523, 100); 
-  playTone(659, 100); 
-  playTone(784, 200); 
+  playTone(1047, 100);
+  playTone(1318, 100);
+  playTone(1568, 200);
 }
 
-// GOOD
 void playGoodbyeAccepted() {
-  playTone(784, 100);
-  playTone(659, 100); 
-  playTone(523, 200); 
+  playTone(1568, 100);
+  playTone(1318, 100);
+  playTone(1047, 200);
 }
 
-void playRemoveFinger(unsigned long howLong) {
-  playTone(784, 90); 
+void playRemoveFinger() {
+  playTone(1568, 90);
   delay(50);
-  playTone(659, 120);
+  playTone(1318, 120);
 }
 
-void playPlaceFinger(unsigned long howLong) {
-  playTone(659, 140);  
+void playPlaceFinger() {
+  playTone(1318, 140);
   delay(50);
-  playTone(784, 120);  
+  playTone(1568, 120);
 }
-
 
 void printMenu() {
   Serial.println("\n🎵 SOUND TEST MENU 🎵");
@@ -134,6 +113,8 @@ void printMenu() {
   Serial.println("8  - Low Battery");
   Serial.println("9  - Error");
   Serial.println("10 - Alert to Power Off");
+  Serial.println("11 - Place Finger");
+  Serial.println("12 - Remove Finger");
   Serial.print("Enter your choice: ");
 }
 
@@ -148,7 +129,7 @@ void handleOption(int option) {
     case 6: playPowerOff(); break;
     case 7: playNoMatch(); break;
     case 8: playLowBattery(); break;
-    case 9: playError(200UL); break;
+    case 9: playError(); break;
     case 10: playAlertToPowerOff(); break;
     case 11: playPlaceFinger(); break;
     case 12: playRemoveFinger(); break;
